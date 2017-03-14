@@ -350,6 +350,12 @@ you should place your code here."
   (setq whitespace-line-column 80) ;; limit line length
   (setq whitespace-style '(face tabs empty trailing))
 
+  (with-eval-after-load 'org
+    (org-babel-do-load-languages
+     'org-babel-load-languages
+     '((emacs-lisp . t)
+       )))
+
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
@@ -359,6 +365,8 @@ you should place your code here."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(org-babel-load-languages (quote ((awk . t) (C . t))))
+ '(org-confirm-babel-evaluate nil)
  '(package-selected-packages
    (quote
     (ox-gfm vmd-mode web-mode tagedit slim-mode scss-mode sass-mode pug-mode less-css-mode helm-css-scss haml-mode emmet-mode company-web web-completion-data flycheck-haskell intero hlint-refactor hindent helm-hoogle haskell-snippets company-ghci company-ghc ghc haskell-mode company-cabal cmm-mode plantuml-mode yaml-mode hide-comnt pyenv-mode orgit org-present org-pomodoro alert log4e markdown-toc magit-gitflow magit-gh-pulls helm-gitignore helm-company helm-c-yasnippet github-search github-clone git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ gist gh marshal logito pcache flyspell-correct-helm flycheck-pos-tip evil-magit magit magit-popup git-commit company-statistics company-quickhelp pos-tip company-c-headers company-auctex company-anaconda cmake-ide auto-yasnippet anaconda-mode ac-ispell yapfify xterm-color stickyfunc-enhance srefactor smeargle shell-pop rtags pyvenv pytest py-isort pkgbuild-mode pip-requirements org-projectile org gntp org-download mwim multi-term mmm-mode markdown-mode live-py-mode hy-mode htmlize helm-pydoc gnuplot gitignore-mode github-browse-file gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter ht gh-md geiser flyspell-correct flycheck with-editor eshell-z eshell-prompt-extras esh-help disaster diff-hl cython-mode company cmake-mode levenshtein clang-format yasnippet auto-dictionary auctex pythonic ag auto-complete solarized-theme ws-butler window-numbering which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint info+ indent-guide ido-vertical-mode hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight elisp-slime-nav dumb-jump f s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed dash aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async quelpa package-build spacemacs-theme))))
