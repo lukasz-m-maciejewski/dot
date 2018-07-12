@@ -45,7 +45,8 @@ values."
                       auto-completion-enable-snippets-in-poput t)
      better-defaults
      c-c++
-     cpp-extended
+     cpp-cquery-extended
+     ;; cpp-advanced
      emacs-lisp
      ;; git
      (git :variables
@@ -68,15 +69,15 @@ values."
             shell-default-height 30
             shell-default-shell 'eshell
             shell-default-position 'bottom)
-     spell-checking
-     syntax-checking
+     ;; spell-checking
+     ;; syntax-checking
      version-control
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
-   dotspacemacs-additional-packages '(pkgbuild-mode ag rtags cmake-ide)
+   dotspacemacs-additional-packages '(pkgbuild-mode ag)
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    ;; A list of packages that will not be installed and loaded.
@@ -149,14 +150,13 @@ values."
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
    dotspacemacs-themes '(solarized-dark
-                         spacemacs-dark
-                         spacemacs-light)
+                         solarized-light)
    ;; If non nil the cursor color matches the state color in GUI Emacs.
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
-   dotspacemacs-default-font '("Source Code Pro"
-                               :size 13
+   dotspacemacs-default-font '("Fira Code"
+                               :size 14
                                :weight normal
                                :width normal
                                :powerline-scale 1.1)
@@ -248,7 +248,7 @@ values."
    ;; If non nil the frame is maximized when Emacs starts up.
    ;; Takes effect only if `dotspacemacs-fullscreen-at-startup' is nil.
    ;; (default nil) (Emacs 24.4+ only)
-   dotspacemacs-maximized-at-startup nil
+   dotspacemacs-maximized-at-startup t
    ;; A value from the range (0..100), in increasing opacity, which describes
    ;; the transparency level of a frame when it's active or selected.
    ;; Transparency can be toggled through `toggle-transparency'. (default 90)
@@ -262,7 +262,7 @@ values."
    ;; If non nil show the color guide hint for transient state keys. (default t)
    dotspacemacs-show-transient-state-color-guide t
    ;; If non nil unicode symbols are displayed in the mode line. (default t)
-   dotspacemacs-mode-line-unicode-symbols t
+   dotspacemacs-mode-line-unicode-symbols nil
    ;; If non nil smooth scrolling (native-scrolling) is enabled. Smooth
    ;; scrolling overrides the default behavior of Emacs which recenters point
    ;; when it reaches the top or bottom of the screen. (default t)
@@ -342,7 +342,8 @@ you should place your code here."
     "C++ mode customization hook."
     (add-to-list 'c-offsets-alist '(innamespace . 0))
     (c-set-offset 'substatement-open 0)
-    (c-set-offset 'label '+))
+    (c-set-offset 'label '+)
+    )
 
   (add-hook 'c-mode-common-hook 'my-c-mode-common-hook)
   (add-hook 'c++-mode-hook 'my-c++-mode-hook)
@@ -355,7 +356,12 @@ you should place your code here."
      'org-babel-load-languages
      '((emacs-lisp . t)
        )))
+  (delete-selection-mode 1)
+  (add-hook 'c++-mode-hook (lambda ()
+                             (local-set-key (quote [f6]) 'clang-format-buffer)))
 
+  (sp-pair "'" nil :actions :rem)
+  (sp-pair "\"" nil :actions :rem)
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
@@ -369,7 +375,13 @@ you should place your code here."
  '(org-confirm-babel-evaluate nil)
  '(package-selected-packages
    (quote
-    (ox-gfm vmd-mode web-mode tagedit slim-mode scss-mode sass-mode pug-mode less-css-mode helm-css-scss haml-mode emmet-mode company-web web-completion-data flycheck-haskell intero hlint-refactor hindent helm-hoogle haskell-snippets company-ghci company-ghc ghc haskell-mode company-cabal cmm-mode plantuml-mode yaml-mode hide-comnt pyenv-mode orgit org-present org-pomodoro alert log4e markdown-toc magit-gitflow magit-gh-pulls helm-gitignore helm-company helm-c-yasnippet github-search github-clone git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ gist gh marshal logito pcache flyspell-correct-helm flycheck-pos-tip evil-magit magit magit-popup git-commit company-statistics company-quickhelp pos-tip company-c-headers company-auctex company-anaconda cmake-ide auto-yasnippet anaconda-mode ac-ispell yapfify xterm-color stickyfunc-enhance srefactor smeargle shell-pop rtags pyvenv pytest py-isort pkgbuild-mode pip-requirements org-projectile org gntp org-download mwim multi-term mmm-mode markdown-mode live-py-mode hy-mode htmlize helm-pydoc gnuplot gitignore-mode github-browse-file gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter ht gh-md geiser flyspell-correct flycheck with-editor eshell-z eshell-prompt-extras esh-help disaster diff-hl cython-mode company cmake-mode levenshtein clang-format yasnippet auto-dictionary auctex pythonic ag auto-complete solarized-theme ws-butler window-numbering which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint info+ indent-guide ido-vertical-mode hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight elisp-slime-nav dumb-jump f s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed dash aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async quelpa package-build spacemacs-theme)))
+    (cquery lsp-mode winum unfill org-category-capture org-mime dash-functional fuzzy ghub let-alist ox-gfm vmd-mode web-mode tagedit slim-mode scss-mode sass-mode pug-mode less-css-mode helm-css-scss haml-mode emmet-mode company-web web-completion-data flycheck-haskell intero hlint-refactor hindent helm-hoogle haskell-snippets company-ghci company-ghc ghc haskell-mode company-cabal cmm-mode plantuml-mode yaml-mode hide-comnt pyenv-mode orgit org-present org-pomodoro alert log4e markdown-toc magit-gitflow magit-gh-pulls helm-gitignore helm-company helm-c-yasnippet github-search github-clone git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ gist gh marshal logito pcache flyspell-correct-helm flycheck-pos-tip evil-magit magit magit-popup git-commit company-statistics company-quickhelp pos-tip company-c-headers company-auctex company-anaconda cmake-ide auto-yasnippet anaconda-mode ac-ispell yapfify xterm-color stickyfunc-enhance srefactor smeargle shell-pop rtags pyvenv pytest py-isort pkgbuild-mode pip-requirements org-projectile org gntp org-download mwim multi-term mmm-mode markdown-mode live-py-mode hy-mode htmlize helm-pydoc gnuplot gitignore-mode github-browse-file gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter ht gh-md geiser flyspell-correct flycheck with-editor eshell-z eshell-prompt-extras esh-help disaster diff-hl cython-mode company cmake-mode levenshtein clang-format yasnippet auto-dictionary auctex pythonic ag auto-complete solarized-theme ws-butler window-numbering which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint info+ indent-guide ido-vertical-mode hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight elisp-slime-nav dumb-jump f s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed dash aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async quelpa package-build spacemacs-theme)))
+ '(safe-local-variable-values
+   (quote
+    ((cmake-ide-build-dir . "/home/lukaszm/projects/build-drakmoor/")
+     (cmake-ide-project-dir . "/home/lukaszm/projects/drakmoor/")
+     (cmake-ide-build-dir . "/home/lukaszm/projects/string_view/build")
+     (cmake-ide-project-dir . "/home/lukaszm/projects/string_view"))))
  '(vc-follow-symlinks t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
