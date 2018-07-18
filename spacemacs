@@ -361,7 +361,15 @@ you should place your code here."
                              (local-set-key (quote [f6]) 'clang-format-buffer)))
 
   (sp-pair "'" nil :actions :rem)
-  (sp-pair "\"" nil :actions :rem)
+
+  (with-eval-after-load 'projectile
+    (projectile-register-project-type 'cpp-code '("projectile-cpp")
+                                      :configure "(mkdir build-debug; cd build-debug; cmake ../source -GNinja -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_BUILD_TYPE=Debug; cd ..; ln -s build-debug/compile_commands.json)"
+                                      :src-dir "source"
+                                      :compile "(cd build-debug; cmake --build . )"
+                                      :test "(cd build-debug; ctest .)"
+                                      :test-suffix ".test.cpp"
+                                      ))
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
